@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080808">
+
+    <title>Our Messages | ETERNALLY</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="messages-page">
+
+        <!-- HEADER -->
+
+        <header class="messages-header">
+
+            <a href="index.html" class="back-link">
+                ← Back
+            </a>
+
+            <p class="section-label">ETERNALLY</p>
+
+            <h1>Our Messages</h1>
+
+            <p class="messages-intro">
+                Little conversations, endless memories.
+                Every word holds a piece of us.
+            </p>
+
+        </header>
+
+
+        <!-- MESSAGES GALLERY -->
+
+        <section class="messages-gallery">
+
+            <div class="message-card">
+                <img src="images/IMG-20261120-WA0306.jpg"
+                     alt="Our conversation memory 1">
+            </div>
+
+            <div class="message-card">
+                <img src="images/IMG-20261120-WA0307.jpg"
+                     alt="Our conversation memory 2">
+            </div>
+
+            <div class="message-card">
+                <img src="images/IMG-20261120-WA0308.jpg"
+                     alt="Our conversation memory 3">
+            </div>
+
+            <div class="message-card">
+                <img src="images/IMG-20261120-WA0309.jpg"
+                     alt="Our conversation memory 4">
+            </div>
+
+            <div class="message-card">
+                <img src="images/IMG-20261120-WA0310.jpg"
+                     alt="Our conversation memory 5">
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="messages-footer">
+
+            <p>Some conversations never lose their magic.</p>
+
+            <span>FOREVER & ALWAYS ♡</span>
+
+        </footer>
+
+
+        <!-- NEXT CHAPTER: LOVE LETTER -->
+
+        <section class="letter-next-section">
+
+            <p>AND THERE'S ONE MORE THING...</p>
+
+            <h2>A Little Something From My Heart</h2>
+
+            <a href="love-letter.html" class="letter-next-button">
+                READ MY LOVE LETTER ♥
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- MESSAGE LIGHTBOX -->
+
+    <div class="message-lightbox" id="messageLightbox">
+
+        <button class="message-lightbox-close"
+                id="closeMessageLightbox"
+                aria-label="Close image">
+            &times;
+        </button>
+
+        <img id="enlargedMessage"
+             src=""
+             alt="Enlarged conversation screenshot">
+
+        <p class="lightbox-caption">
+            A LITTLE PIECE OF OUR STORY ♥
+        </p>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const lightbox = document.getElementById("messageLightbox");
+            const enlargedImage = document.getElementById("enlargedMessage");
+            const closeButton = document.getElementById("closeMessageLightbox");
+
+            const messageImages = document.querySelectorAll(".message-card img");
+
+
+            // OPEN SCREENSHOT
+
+            messageImages.forEach(function (image) {
+
+                image.addEventListener("click", function () {
+
+                    enlargedImage.src = image.src;
+                    enlargedImage.alt = image.alt;
+
+                    lightbox.classList.add("active");
+                    document.body.style.overflow = "hidden";
+
+                });
+
+            });
+
+
+            // CLOSE LIGHTBOX
+
+            function closeMessage() {
+
+                lightbox.classList.remove("active");
+                document.body.style.overflow = "";
+                enlargedImage.src = "";
+
+            }
+
+
+            closeButton.addEventListener("click", closeMessage);
+
+
+            // CLOSE WHEN CLICKING OUTSIDE IMAGE
+
+            lightbox.addEventListener("click", function (event) {
+
+                if (event.target === lightbox) {
+                    closeMessage();
+                }
+
+            });
+
+
+            // CLOSE WITH ESCAPE KEY
+
+            document.addEventListener("keydown", function (event) {
+
+                if (event.key === "Escape") {
+                    closeMessage();
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

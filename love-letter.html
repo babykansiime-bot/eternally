@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080808">
+
+    <title>A Letter From the Heart | ETERNALLY</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="love-letter-page">
+
+        <a href="messages.html" class="letter-back-link">
+            ← Back to Our Messages
+        </a>
+
+        <section class="letter-intro" id="letterIntro">
+
+            <p class="section-label">ETERNALLY</p>
+
+            <h1>A Letter From the Heart</h1>
+
+            <p class="letter-description">
+                Some feelings are too precious for ordinary words.
+                So I put mine on paper, just for you.
+            </p>
+
+            <!-- ENVELOPE -->
+            <div class="letter-envelope" id="letterEnvelope">
+
+                <div class="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-heart">♥</div>
+                </div>
+
+            </div>
+
+            <!-- OPEN BUTTON -->
+            <button
+                type="button"
+                class="open-letter-button"
+                id="openLetterButton">
+                OPEN MY HEART ♥
+            </button>
+
+        </section>
+
+        <!-- HANDWRITTEN LETTER REVEAL -->
+        <section
+            class="letter-document"
+            id="letterDocument"
+            style="display: none;">
+
+            <p class="section-label">A PIECE OF MY HEART</p>
+
+            <h2>Written Just for You</h2>
+
+            <p class="letter-description">
+                Every word was written with you in mind.
+                Here is something I wanted you to keep forever.
+            </p>
+
+            <a
+                href="./love-letter.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="handwritten-letter-button">
+                READ YOUR LETTER ♥
+            </a>
+
+            <p class="letter-hint">
+                Open your letter and take your time reading every page.
+            </p>
+
+        </section>
+
+    </main>
+
+       <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const openButton = document.getElementById("openLetterButton");
+            const intro = document.getElementById("letterIntro");
+            const letterDocument = document.getElementById("letterDocument");
+
+            if (!openButton || !intro || !letterDocument) {
+                console.error("Love letter elements could not be found.");
+                return;
+            }
+
+            openButton.addEventListener("click", function () {
+
+                intro.style.display = "none";
+                letterDocument.style.display = "block";
+
+                letterDocument.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>
