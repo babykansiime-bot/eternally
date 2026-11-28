@@ -11,7 +11,6 @@ const openingScreen = document.getElementById("openingScreen");
 const welcomeScreen = document.getElementById("welcomeScreen");
 const storyScreen = document.getElementById("storyScreen");
 const memoriesScreen = document.getElementById("memoriesScreen");
-const musicScreen = document.getElementById("musicScreen");
 
 const openSurprise = document.getElementById("openSurprise");
 const continueButton = document.getElementById("continueButton");
@@ -428,136 +427,11 @@ function backToCalendar() {
 
 
 // =================================
-// OUR SONG PLAYER
-// =================================
-
-const vinylRecord = document.getElementById("vinylRecord");
-const ourSong = document.getElementById("ourSong");
-
-const playPauseButton = document.getElementById("playPauseButton");
-const playPauseIcon = document.getElementById("playPauseIcon");
-const musicStatus = document.getElementById("musicStatus");
-
-
-// PLAY AND PAUSE
-
-if (playPauseButton && ourSong) {
-
-    playPauseButton.addEventListener("click", async () => {
-
-        if (ourSong.paused) {
-
-            try {
-
-                await ourSong.play();
-
-                if (vinylRecord) {
-                    vinylRecord.classList.add("playing");
-                }
-
-                if (playPauseIcon) {
-                    playPauseIcon.textContent = "Ⅱ";
-                }
-
-                playPauseButton.setAttribute("aria-label", "Pause song");
-
-                if (musicStatus) {
-                    musicStatus.textContent = "NOW PLAYING OUR SONG ♥";
-                }
-
-            } catch (error) {
-
-                console.error("Unable to play the song:", error);
-
-                if (musicStatus) {
-                    musicStatus.textContent = "COULD NOT PLAY THE SONG";
-                }
-
-            }
-
-        } else {
-
-            ourSong.pause();
-
-        }
-
-    });
-
-}
-
-
-// SONG PLAY EVENT
-
-if (ourSong) {
-
-    ourSong.addEventListener("play", () => {
-
-        if (vinylRecord) {
-            vinylRecord.classList.add("playing");
-        }
-
-    });
-
-    // SONG PAUSE EVENT
-
-    ourSong.addEventListener("pause", () => {
-
-        if (vinylRecord) {
-            vinylRecord.classList.remove("playing");
-        }
-
-        if (playPauseIcon) {
-            playPauseIcon.textContent = "▶";
-        }
-
-        if (playPauseButton) {
-            playPauseButton.setAttribute("aria-label", "Play song");
-        }
-
-        if (musicStatus) {
-            musicStatus.textContent = "PAUSED — OUR SONG ♥";
-        }
-
-    });
-
-    // SONG ENDS
-
-    ourSong.addEventListener("ended", () => {
-
-        if (vinylRecord) {
-            vinylRecord.classList.remove("playing");
-        }
-
-        if (playPauseIcon) {
-            playPauseIcon.textContent = "▶";
-        }
-
-        if (playPauseButton) {
-            playPauseButton.setAttribute("aria-label", "Play song");
-        }
-
-        if (musicStatus) {
-            musicStatus.textContent = "A SONG THAT WILL ALWAYS BE OURS ♥";
-        }
-
-    });
-
-}
-
-
-// =================================
-// NAVIGATION TO OUR SONG
+// NAVIGATION TO THE SEPARATE SONG PAGE
 // =================================
 
 function openMusicScreen() {
-
-    if (!musicScreen || !memoriesScreen) return;
-
-    memoriesScreen.classList.remove("show");
-    musicScreen.classList.add("show");
-
-    scrollToTop();
-
+    window.location.href = "music.html";
 }
 
 
@@ -656,10 +530,6 @@ function openLyricsScreen() {
         memoriesScreen.classList.remove("show");
     }
 
-    if (musicScreen) {
-        musicScreen.classList.remove("show");
-    }
-
     lyricsScreen.classList.add("show");
 
     scrollToTop();
@@ -750,5 +620,33 @@ function backToLyrics() {
     scrollToTop();
 
 }
+
+
+// =================================
+// RETURN FROM MUSIC PAGE TO MEMORIES
+// =================================
+
+(function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("fromMusic") !== "1") return;
+
+    const opening = document.getElementById("openingScreen");
+    const welcome = document.getElementById("welcomeScreen");
+    const story = document.getElementById("storyScreen");
+    const calendar = document.getElementById("calendar-screen");
+    const forever = document.getElementById("forever-screen");
+    const memories = document.getElementById("memoriesScreen");
+
+    if (opening) opening.style.display = "none";
+    if (welcome) welcome.style.display = "none";
+    if (story) story.classList.remove("show");
+    if (calendar) calendar.classList.remove("show");
+    if (forever) forever.classList.remove("show");
+    if (memories) memories.classList.add("show");
+
+    window.history.replaceState({}, document.title, "index.html");
+    window.scrollTo(0, 0);
+})();
+
 
 console.log("ETERNALLY JavaScript loaded successfully ♥");
