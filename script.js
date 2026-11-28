@@ -16,13 +16,9 @@ const openSurprise = document.getElementById("openSurprise");
 const continueButton = document.getElementById("continueButton");
 const viewMemoriesButton = document.getElementById("viewMemoriesButton");
 
-const memoryLightbox = document.getElementById("memoryLightbox");
-const lightboxImage = document.getElementById("lightboxImage");
-const closeLightboxButton = document.getElementById("closeLightbox");
-
 
 // =================================
-// HELPER: SCROLL TO TOP
+// SCROLL TO TOP
 // =================================
 
 function scrollToTop() {
@@ -34,40 +30,22 @@ function scrollToTop() {
 
 
 // =================================
-// OPEN THE ANNIVERSARY SURPRISE
+// OPENING EXPERIENCE
 // =================================
 
 if (openSurprise) {
     openSurprise.addEventListener("click", () => {
-
-        if (openingScreen) {
-            openingScreen.style.display = "none";
-        }
-
-        if (welcomeScreen) {
-            welcomeScreen.classList.add("show");
-        }
-
+        if (openingScreen) openingScreen.style.display = "none";
+        if (welcomeScreen) welcomeScreen.classList.add("show");
         scrollToTop();
     });
 }
 
 
-// =================================
-// BEGIN OUR LOVE STORY
-// =================================
-
 if (continueButton) {
     continueButton.addEventListener("click", () => {
-
-        if (welcomeScreen) {
-            welcomeScreen.style.display = "none";
-        }
-
-        if (storyScreen) {
-            storyScreen.classList.add("show");
-        }
-
+        if (welcomeScreen) welcomeScreen.style.display = "none";
+        if (storyScreen) storyScreen.classList.add("show");
         scrollToTop();
     });
 }
@@ -87,9 +65,7 @@ if (viewMemoriesButton) {
         if (calendar) calendar.classList.remove("show");
         if (forever) forever.classList.remove("show");
 
-        if (memoriesScreen) {
-            memoriesScreen.classList.add("show");
-        }
+        if (memoriesScreen) memoriesScreen.classList.add("show");
 
         scrollToTop();
     });
@@ -97,70 +73,55 @@ if (viewMemoriesButton) {
 
 
 // =================================
-// UNIVERSAL IMAGE LIGHTBOX
-// USED BY MEMORIES, LYRICS & JOKES
+// MEMORIES IMAGE LIGHTBOX
 // =================================
+
+const memoryLightbox = document.getElementById("memoryLightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const closeLightboxButton = document.getElementById("closeLightbox");
+
 
 function openImageLightbox(image) {
 
     if (!image || !memoryLightbox || !lightboxImage) {
+        console.error("Memories lightbox elements are missing.");
         return;
     }
 
-    lightboxImage.src = image.src;
+    lightboxImage.src = image.currentSrc || image.src;
     lightboxImage.alt = image.alt || "Our special memory";
 
     memoryLightbox.classList.add("show");
 
+    document.body.style.overflow = "hidden";
 }
 
-
-// CLOSE LIGHTBOX
 
 function closePhoto() {
 
-    if (!memoryLightbox || !lightboxImage) {
-        return;
-    }
+    if (!memoryLightbox || !lightboxImage) return;
 
     memoryLightbox.classList.remove("show");
 
-    lightboxImage.src = "";
+    lightboxImage.removeAttribute("src");
     lightboxImage.alt = "";
+
+    document.body.style.overflow = "";
 }
 
-
-// CLOSE BUTTON
 
 if (closeLightboxButton) {
     closeLightboxButton.addEventListener("click", closePhoto);
 }
 
 
-// CLOSE WHEN CLICKING OUTSIDE THE IMAGE
-
 if (memoryLightbox) {
-
     memoryLightbox.addEventListener("click", (event) => {
-
         if (event.target === memoryLightbox) {
             closePhoto();
         }
-
     });
-
 }
-
-
-// CLOSE WITH ESCAPE KEY
-
-document.addEventListener("keydown", (event) => {
-
-    if (event.key === "Escape") {
-        closePhoto();
-    }
-
-});
 
 
 // =================================
@@ -170,11 +131,8 @@ document.addEventListener("keydown", (event) => {
 document.querySelectorAll(".memory-photo").forEach((photo) => {
 
     photo.addEventListener("click", () => {
-
         const image = photo.querySelector("img");
-
         openImageLightbox(image);
-
     });
 
 });
@@ -220,28 +178,18 @@ document.querySelectorAll(".memory-photo").forEach((photo) => {
     const firstDay = new Date(2025, 10, 1).getDay();
     const totalDays = new Date(2025, 11, 0).getDate();
 
-    // EMPTY SPACES BEFORE NOVEMBER 1
-
     for (let i = 0; i < firstDay; i++) {
-
         const emptyCell = document.createElement("div");
-
         emptyCell.className = "calendar-day empty";
-
         calendarDays.appendChild(emptyCell);
-
     }
-
-    // GENERATE NOVEMBER DATES
 
     for (let day = 1; day <= totalDays; day++) {
 
         const dateCell = document.createElement("div");
-
         dateCell.className = "calendar-day";
 
         const dateNumber = document.createElement("span");
-
         dateNumber.textContent = day;
 
         dateCell.appendChild(dateNumber);
@@ -253,7 +201,6 @@ document.querySelectorAll(".memory-photo").forEach((photo) => {
             dateCell.classList.add("special-date", special.type);
 
             const symbol = document.createElement("span");
-
             symbol.className = "date-symbol";
             symbol.textContent = special.symbol;
 
@@ -280,27 +227,19 @@ document.querySelectorAll(".memory-photo").forEach((photo) => {
                     behavior: "smooth",
                     block: "nearest"
                 });
-
             }
 
             dateCell.addEventListener("click", showMemory);
 
             dateCell.addEventListener("keydown", (event) => {
-
                 if (event.key === "Enter" || event.key === " ") {
-
                     event.preventDefault();
-
                     showMemory();
-
                 }
-
             });
-
         }
 
         calendarDays.appendChild(dateCell);
-
     }
 
     console.log("ETERNALLY calendar generated successfully.");
@@ -309,7 +248,7 @@ document.querySelectorAll(".memory-photo").forEach((photo) => {
 
 
 // =================================
-// OPEN CALENDAR FROM OUR STORY
+// STORY AND CALENDAR NAVIGATION
 // =================================
 
 function openCalendar() {
@@ -317,16 +256,12 @@ function openCalendar() {
     const story = document.querySelector(".story-screen");
     const calendar = document.getElementById("calendar-screen");
 
-    if (!story || !calendar) {
-        console.error("Our Story or Calendar section could not be found.");
-        return;
-    }
+    if (!story || !calendar) return;
 
     story.classList.remove("show");
     calendar.classList.add("show");
 
     scrollToTop();
-
 }
 
 
@@ -341,7 +276,6 @@ function backToStory() {
     story.classList.add("show");
 
     scrollToTop();
-
 }
 
 
@@ -352,23 +286,17 @@ function backToStory() {
 function updateForeverCounter() {
 
     const startDate = new Date(2025, 10, 28, 0, 0, 0);
-
     const now = new Date();
 
     let difference = now.getTime() - startDate.getTime();
 
-    if (difference < 0) {
-        difference = 0;
-    }
+    if (difference < 0) difference = 0;
 
     const totalSeconds = Math.floor(difference / 1000);
 
     const days = Math.floor(totalSeconds / 86400);
-
     const hours = Math.floor((totalSeconds % 86400) / 3600);
-
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-
     const seconds = totalSeconds % 60;
 
     const daysElement = document.getElementById("forever-days");
@@ -384,16 +312,14 @@ function updateForeverCounter() {
     hoursElement.textContent = String(hours).padStart(2, "0");
     minutesElement.textContent = String(minutes).padStart(2, "0");
     secondsElement.textContent = String(seconds).padStart(2, "0");
-
 }
 
 updateForeverCounter();
-
 setInterval(updateForeverCounter, 1000);
 
 
 // =================================
-// OUR FOREVER NAVIGATION
+// FOREVER NAVIGATION
 // =================================
 
 function openForever() {
@@ -407,7 +333,6 @@ function openForever() {
     foreverScreen.classList.add("show");
 
     scrollToTop();
-
 }
 
 
@@ -422,12 +347,11 @@ function backToCalendar() {
     calendarScreen.classList.add("show");
 
     scrollToTop();
-
 }
 
 
 // =================================
-// NAVIGATION TO THE SEPARATE SONG PAGE
+// MUSIC PAGE NAVIGATION
 // =================================
 
 function openMusicScreen() {
@@ -436,13 +360,12 @@ function openMusicScreen() {
 
 
 // =================================
-// OUR LYRICS GALLERY
+// LYRICS GALLERY
 // =================================
 
 const lyricsGallery = document.getElementById("lyricsGallery");
 
 const lyricPhotos = [
-
     "akon-hold-my-hand.jpg",
     "anyone-jb.jpg",
     "anyone-justin-bieber.jpg",
@@ -481,11 +404,8 @@ const lyricPhotos = [
     "sure-thing.jpg",
     "the-take.jpg",
     "tsoul-best-of-me.jpg"
-
 ];
 
-
-// GENERATE LYRICS GALLERY
 
 if (lyricsGallery) {
 
@@ -494,7 +414,6 @@ if (lyricsGallery) {
     lyricPhotos.forEach((photo, index) => {
 
         const card = document.createElement("div");
-
         card.className = "lyrics-card";
 
         const image = document.createElement("img");
@@ -510,14 +429,12 @@ if (lyricsGallery) {
         });
 
         lyricsGallery.appendChild(card);
-
     });
-
 }
 
 
 // =================================
-// NAVIGATION TO OUR LYRICS
+// LYRICS NAVIGATION
 // =================================
 
 function openLyricsScreen() {
@@ -526,85 +443,13 @@ function openLyricsScreen() {
 
     if (!lyricsScreen) return;
 
-    if (memoriesScreen) {
-        memoriesScreen.classList.remove("show");
-    }
+    if (memoriesScreen) memoriesScreen.classList.remove("show");
 
     lyricsScreen.classList.add("show");
 
     scrollToTop();
-
 }
 
-
-// =================================
-// INSIDE JOKES GALLERY
-// TAP A JOKE TO OPEN ITS IMAGE
-// =================================
-
-const jokeCards = document.querySelectorAll(".joke-card");
-
-jokeCards.forEach((card) => {
-
-    const image = card.querySelector("img");
-
-    if (!image) return;
-
-    card.setAttribute("role", "button");
-    card.setAttribute("tabindex", "0");
-
-    card.addEventListener("click", () => {
-
-        openImageLightbox(image);
-
-    });
-
-    // ALSO ALLOW ENTER AND SPACE TO OPEN
-
-    card.addEventListener("keydown", (event) => {
-
-        if (event.key === "Enter" || event.key === " ") {
-
-            event.preventDefault();
-
-            openImageLightbox(image);
-
-        }
-
-    });
-
-});
-
-
-// =================================
-// OPEN INSIDE JOKES PAGE
-// =================================
-
-function openInsideJokes() {
-
-    const lyricsScreen = document.getElementById("lyricsScreen");
-    const insideJokesScreen = document.getElementById("insideJokesScreen");
-
-    if (!lyricsScreen || !insideJokesScreen) {
-
-        console.error("Lyrics or Inside Jokes screen not found.");
-
-        return;
-
-    }
-
-    lyricsScreen.classList.remove("show");
-
-    insideJokesScreen.classList.add("show");
-
-    scrollToTop();
-
-}
-
-
-// =================================
-// RETURN TO OUR LYRICS
-// =================================
 
 function backToLyrics() {
 
@@ -614,20 +459,113 @@ function backToLyrics() {
     if (!lyricsScreen || !insideJokesScreen) return;
 
     insideJokesScreen.classList.remove("show");
-
     lyricsScreen.classList.add("show");
 
     scrollToTop();
-
 }
 
 
 // =================================
-// RETURN FROM MUSIC PAGE TO MEMORIES
+// INSIDE JOKES PHOTO LIGHTBOX
+// =================================
+
+const jokeLightbox = document.getElementById("jokeLightbox");
+const jokePopupImage = document.getElementById("jokePopupImage");
+const closeJokeLightbox = document.getElementById("closeJokeLightbox");
+
+
+function openJokePhoto(card) {
+
+    if (!card || !jokeLightbox || !jokePopupImage) {
+        console.error("Inside Jokes popup elements are missing.");
+        return;
+    }
+
+    const image = card.querySelector("img");
+
+    if (!image) return;
+
+    jokePopupImage.src = image.currentSrc || image.src;
+    jokePopupImage.alt = image.alt || "Inside joke photograph";
+
+    jokeLightbox.style.display = "flex";
+    document.body.style.overflow = "hidden";
+
+    console.log("Inside joke photograph opened:", jokePopupImage.src);
+}
+
+
+function closeJokePhoto() {
+
+    if (!jokeLightbox || !jokePopupImage) return;
+
+    jokeLightbox.style.display = "none";
+    jokePopupImage.removeAttribute("src");
+
+    document.body.style.overflow = "";
+}
+
+
+// Attach one click handler to the document.
+// This also works when clicking the image or overlay inside a card.
+
+document.addEventListener("click", (event) => {
+
+    const card = event.target.closest(".joke-card");
+
+    if (card) {
+        openJokePhoto(card);
+        return;
+    }
+
+    if (event.target.closest("#closeJokeLightbox")) {
+        closeJokePhoto();
+        return;
+    }
+
+    if (event.target === jokeLightbox) {
+        closeJokePhoto();
+    }
+});
+
+
+if (closeJokeLightbox) {
+    closeJokeLightbox.addEventListener("click", closeJokePhoto);
+}
+
+
+// Keyboard support for joke cards and Escape to close
+
+document.addEventListener("keydown", (event) => {
+
+    if (
+        event.target.closest &&
+        event.target.closest(".joke-card") &&
+        (event.key === "Enter" || event.key === " ")
+    ) {
+        event.preventDefault();
+        openJokePhoto(event.target.closest(".joke-card"));
+        return;
+    }
+
+    if (
+        event.key === "Escape" &&
+        jokeLightbox &&
+        jokeLightbox.style.display === "flex"
+    ) {
+        closeJokePhoto();
+    }
+});
+
+
+// =================================
+// RETURN FROM MUSIC PAGE
 // =================================
 
 (function () {
+
     const params = new URLSearchParams(window.location.search);
+
     if (params.get("fromMusic") !== "1") return;
 
     const opening = document.getElementById("openingScreen");
@@ -645,8 +583,27 @@ function backToLyrics() {
     if (memories) memories.classList.add("show");
 
     window.history.replaceState({}, document.title, "index.html");
+
     window.scrollTo(0, 0);
+
 })();
+
+
+// =================================
+// GLOBAL ESCAPE KEY FOR MEMORIES
+// =================================
+
+document.addEventListener("keydown", (event) => {
+
+    if (
+        event.key === "Escape" &&
+        memoryLightbox &&
+        memoryLightbox.classList.contains("show")
+    ) {
+        closePhoto();
+    }
+
+});
 
 
 console.log("ETERNALLY JavaScript loaded successfully ♥");

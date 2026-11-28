@@ -3552,3 +3552,42 @@ body {
     transform: translateY(-4px);
     box-shadow: 0 10px 30px rgba(212, 175, 114, 0.3);
 }
+
+
+/* =================================
+   INSIDE JOKES PHOTO LIGHTBOX
+================================= */
+
+.joke-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: rgba(0, 0, 0, 0.96);
+}
+
+.joke-lightbox-image {
+    display: block;
+    max-width: 90%;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid #c9aa64;
+    padding: 7px;
+}
+
+.joke-lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: #e1c47b;
+    font-size: 45px;
+    cursor: pointer;
+    z-index: 10001;
+}
