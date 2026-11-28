@@ -498,6 +498,23 @@
 
 </section>
 
+<!-- MEMORIES PHOTO LIGHTBOX -->
+
+<div class="memory-lightbox" id="memoryLightbox">
+
+    <button
+        class="lightbox-close"
+        id="closeLightbox"
+        aria-label="Close photograph">
+        &times;
+    </button>
+
+    <img
+        src=""
+        alt="Our special memory"
+        id="lightboxImage">
+
+</div>
 
 <!-- OUR SONG - SPOTIFY INSPIRED NOW PLAYING -->
 
@@ -836,29 +853,26 @@
 </section>
 
 
-<!-- INSIDE JOKES POPUP LIGHTBOX -->
+
+<!-- INSIDE JOKES PHOTO LIGHTBOX -->
 
 <div class="joke-lightbox" id="jokeLightbox">
 
-    <div class="joke-lightbox-content">
+    <button
+        class="joke-lightbox-close"
+        id="closeJokeLightbox"
+        aria-label="Close photograph">
+        &times;
+    </button>
 
-        <button
-            class="joke-lightbox-close"
-            id="closeJokeLightbox"
-            aria-label="Close joke"
-        >
-            &times;
-        </button>
-
-        <h2 id="jokePopupTitle"></h2>
-
-        <p id="jokePopupMessage"></p>
-
-    </div>
+    <img
+        src=""
+        alt="Enlarged inside joke photograph"
+        id="jokePopupImage"
+        class="joke-lightbox-image">
 
 </div>
 
-</main>
 
 
 <!-- JAVASCRIPT -->
@@ -1241,14 +1255,200 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+// OPEN SELECTED PHOTOGRAPH
 
-    window.addEventListener("resize", function () {
+jokeCards.forEach(function (card) {
 
-        if (anniversaryCelebration.style.display !== "none") {
-            resizeFireworksCanvas();
+    card.addEventListener("click", function () {
+
+        const image = card.querySelector("img");
+
+        jokePopupImage.src = image.src;
+        jokePopupImage.alt = image.alt;
+
+console.log("Clicked image:", image.src);
+console.log("Popup image:", jokePopupImage.src);
+
+        jokeLightbox.style.display = "flex";
+
+        document.body.style.overflow = "hidden";
+
+    });
+
+});
+
+
+// CLOSE PHOTOGRAPH
+
+function closeJokePopup() {
+
+    jokeLightbox.style.display = "none";
+
+    jokePopupImage.src = "";
+
+    document.body.style.overflow = "";
+
+}
+
+
+// CLOSE BUTTON
+
+closeJokeLightbox.addEventListener("click", closeJokePopup);
+
+
+// CLICK OUTSIDE PHOTOGRAPH TO CLOSE
+
+jokeLightbox.addEventListener("click", function (event) {
+
+    if (event.target === jokeLightbox) {
+
+        closeJokePopup();
+
+    }
+
+});
+
+
+// ESCAPE KEY
+
+document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Escape") {
+
+        closeJokePopup();
+
+    }
+
+});
+
+// OPEN JOKE POPUP
+
+function openJokePopup(card) {
+
+    const image = card.querySelector("img");
+    const heading = card.querySelector("h3");
+
+    if (!image || !heading || !jokeLightbox || !jokePopupImage) {
+        return;
+    }
+
+    const title = heading.textContent.trim();
+
+    // DISPLAY THE SELECTED PHOTOGRAPH
+    jokePopupImage.src = image.src;
+    jokePopupImage.alt = image.alt;
+
+    // DISPLAY THE TITLE
+    jokePopupTitle.textContent = title;
+
+    // DISPLAY THE EXPLANATION
+    jokePopupMessage.textContent =
+        jokeMessages[title] ||
+        "Another little memory that makes our story special. ♥";
+
+    jokeLightbox.style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+// CLOSE POPUP
+
+function closeJokePopup() {
+
+    if (!jokeLightbox) return;
+
+    jokeLightbox.style.display = "none";
+
+    jokePopupImage.src = "";
+
+    document.body.style.overflow = "";
+
+}
+
+
+// CLICK ON JOKE CARDS
+
+jokeCards.forEach(function (card) {
+
+    card.addEventListener("click", function () {
+
+        openJokePopup(card);
+
+    });
+
+    card.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter" || event.key === " ") {
+
+            event.preventDefault();
+
+            openJokePopup(card);
+
         }
 
     });
+
+});
+
+
+// CLOSE BUTTON
+
+if (closeJokeLightbox) {
+
+    closeJokeLightbox.addEventListener("click", closeJokePopup);
+
+}
+
+
+// CLICK OUTSIDE POPUP
+
+if (jokeLightbox) {
+
+    jokeLightbox.addEventListener("click", function (event) {
+
+        if (event.target === jokeLightbox) {
+
+            closeJokePopup();
+
+        }
+
+    });
+
+}
+
+
+// ESCAPE KEY
+
+document.addEventListener("keydown", function (event) {
+
+    if (
+        event.key === "Escape" &&
+        jokeLightbox &&
+        jokeLightbox.style.display === "flex"
+    ) {
+
+        closeJokePopup();
+
+    }
+
+});
+
+
+/* =================================
+   RESIZE FIREWORKS
+================================= */
+
+window.addEventListener("resize", function () {
+
+    if (anniversaryCelebration.style.display !== "none") {
+        resizeFireworksCanvas();
+    }
+
+});
+
+});
 
 
     /* =================================
@@ -1272,7 +1472,76 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+;
+
+
+;
+</script>
+
+<script>
+
+    // OPEN THE CLICKED PHOTOGRAPH
+
+    if (card) {
+
+        const image = card.querySelector("img");
+
+        if (!image || !lightbox || !popupImage) return;
+
+        popupImage.src = image.src;
+        popupImage.alt = image.alt;
+
+        lightbox.style.display = "flex";
+        document.body.style.overflow = "hidden";
+
+        console.log("Inside joke photograph opened:", image.src);
+
+        return;
+    }
+
+    // CLOSE USING THE X BUTTON
+
+    if (event.target.closest("#closeJokeLightbox")) {
+
+        closeInsideJokePhoto();
+
+        return;
+    }
+
+    // CLOSE WHEN CLICKING THE DARK BACKGROUND
+
+    if (event.target.id === "jokeLightbox") {
+
+        closeInsideJokePhoto();
+
+    }
+
 });
+
+
+function closeInsideJokePhoto() {
+
+    const lightbox = document.getElementById("jokeLightbox");
+    const popupImage = document.getElementById("jokePopupImage");
+
+    lightbox.style.display = "none";
+    popupImage.src = "";
+
+    document.body.style.overflow = "";
+
+}
+
+
+// CLOSE WITH ESCAPE KEY
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+        closeInsideJokePhoto();
+    }
+
+});
+
 </script>
 
 </body>
